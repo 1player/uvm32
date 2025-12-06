@@ -16,7 +16,7 @@ Check out the [apps](apps) folder for more.
 ## Quickstart
 
     make
-    emulator/emulator precompiled/mandel.bin
+    host/host precompiled/mandel.bin
 
 Build one of the sample apps (requires docker for C, or Zig, or Rust)
 
@@ -24,7 +24,7 @@ Build one of the sample apps (requires docker for C, or Zig, or Rust)
 	
 Run the app
 
-	./emulator ../apps/helloworld/helloworld.bin
+	./host ../apps/helloworld/helloworld.bin
 
 ## Quickstart API
 
@@ -86,7 +86,7 @@ There are two system ioreqs used by uvm32, `halt()` and `yield()`.
 New ioreqs can be added to the host via `uvm32_init()`.
 Each ioreq maps a CSR number to a value understood by the host (`F_PRINTD` below) and has an associated type which tells the host how to interpret the data passed to the CSR.
 
-Here is a full example of a working VM host from [apps/emulator-mini](apps/emulator-mini)
+Here is a full example of a working VM host from [apps/host-mini](apps/host-mini)
 
 --
 
@@ -150,10 +150,10 @@ int main(int argc, char *argv[]) {
 
 ## Samples
 
- * [emulator](emulator) vm host which loads a binary and runs to completion, handling multiple ioreq types
- * [emulator-mini](emulator-mini) minimal vm host (shown above), with baked in bytecode
- * [emulator-parallel](emulator-parallel) parallel vm host running multiple vm instances concurrently, with baked in bytecode
- * [emulator-arduino](emulator-arduino) vm host as Arduino sketch (tested on Arduino Uno ATmega328P, uses 9950 bytes of flash/1254 bytes RAM)
+ * [host](host) vm host which loads a binary and runs to completion, handling multiple ioreq types
+ * [host-mini](host-mini) minimal vm host (shown above), with baked in bytecode
+ * [host-parallel](host-parallel) parallel vm host running multiple vm instances concurrently, with baked in bytecode
+ * [host-arduino](host-arduino) vm host as Arduino sketch (tested on Arduino Uno ATmega328P, uses 9950 bytes of flash/1254 bytes RAM)
  * [apps/helloworld](apps/helloworld) C hello world program
  * [apps/sketch](apps/sketch) C Arduino/Wiring/Processing type program in `setup()` and `loop()` style
  * [apps/rust-hello](apps/rust-hello) Rust hello world program

@@ -7,6 +7,6 @@ clean:
 	rm -rf mandel.bin zig-out .zig-cache
 
 test: all
-	../../emulator/emulator mandel.bin
+	../../host/host mandel.bin
 
 

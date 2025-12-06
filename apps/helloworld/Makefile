@@ -20,7 +20,7 @@ disasm: all
 	$(PREFIX)objdump -S -d -f ${PROJECT}.elf
 
 test: all
-	../../emulator/emulator ${PWD}/${PROJECT}.bin
+	../../host/host ${PWD}/${PROJECT}.bin
 
 clean:
 	rm -f ${PROJECT}.o ${PROJECT}.elf ${PROJECT}.bin
