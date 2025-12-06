@@ -153,6 +153,7 @@ int main(int argc, char *argv[]) {
  * [emulator](emulator) vm host which loads a binary and runs to completion, handling multiple ioreq types
  * [emulator-mini](emulator-mini) minimal vm host (shown above), with baked in bytecode
  * [emulator-parallel](emulator-parallel) parallel vm host running multiple vm instances concurrently, with baked in bytecode
+ * [emulator-arduino](emulator-arduino) vm host as Arduino sketch (tested on Arduino Uno ATmega328P, uses 9950 bytes of flash/1254 bytes RAM)
  * [apps/helloworld](apps/helloworld) C hello world program
  * [apps/sketch](apps/sketch) C Arduino/Wiring/Processing type program in `setup()` and `loop()` style
  * [apps/rust-hello](apps/rust-hello) Rust hello world program
