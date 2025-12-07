@@ -13,7 +13,18 @@ uvm32 is a minimalist, dependency-free virtual machine sandbox designed for micr
 
 Although based on a fully fledged CPU emulator, uvm32 is intended for executing custom script like logic, not for simulating hardware.
 
-Check out the [apps](apps) folder for more.
+## Samples
+
+ * [host](host) vm host which loads a binary and runs to completion, handling multiple ioreq types
+ * [host-mini](host-mini) minimal vm host (shown above), with baked in bytecode
+ * [host-parallel](host-parallel) parallel vm host running multiple vm instances concurrently, with baked in bytecode
+ * [host-arduino](host-arduino) vm host as Arduino sketch (tested on Arduino Uno ATmega328P, uses 9950 bytes of flash/1254 bytes RAM)
+ * [apps/helloworld](apps/helloworld) C hello world program
+ * [apps/hello-asm](apps/hello-asm) Minimal hello world assembly
+ * [apps/fib](apps/fib) C fibonacci series program (iterative and recursive)
+ * [apps/sketch](apps/sketch) C Arduino/Wiring/Processing type program in `setup()` and `loop()` style
+ * [apps/rust-hello](apps/rust-hello) Rust hello world program (note, the version of rust installed by brew on mac has issues, use the official rust installer from https://rust-lang.org/learn/get-started/)
+ * [apps/zig-mandel](apps/zig-mandel) Zig ASCII mandelbrot generator program
 
 ## Quickstart
 
@@ -156,19 +167,6 @@ int main(int argc, char *argv[]) {
 ## Configuration
 
 The uvm32 memory size is set at compile time with `-DUVM32_MEMORY_SIZE=X` (in bytes). A memory of 512 bytes will be sufficient for trivial programs.
-
-## Samples
-
- * [host](host) vm host which loads a binary and runs to completion, handling multiple ioreq types
- * [host-mini](host-mini) minimal vm host (shown above), with baked in bytecode
- * [host-parallel](host-parallel) parallel vm host running multiple vm instances concurrently, with baked in bytecode
- * [host-arduino](host-arduino) vm host as Arduino sketch (tested on Arduino Uno ATmega328P, uses 9950 bytes of flash/1254 bytes RAM)
- * [apps/helloworld](apps/helloworld) C hello world program
- * [apps/hello-asm](apps/hello-asm) Minimal hello world assembly
- * [apps/fib](apps/fib) C fibonacci series program (iterative and recursive)
- * [apps/sketch](apps/sketch) C Arduino/Wiring/Processing type program in `setup()` and `loop()` style
- * [apps/rust-hello](apps/rust-hello) Rust hello world program (note, the version of rust installed by brew on mac has issues, use the official rust installer from https://rust-lang.org/learn/get-started/)
- * [apps/zig-mandel](apps/zig-mandel) Zig ASCII mandelbrot generator program
 
 ## License
 
