@@ -4,11 +4,11 @@ uvm32 is a minimalist, dependency-free virtual machine sandbox designed for micr
 
 ## Features
 
-* Bytecode example apps written in C, Zig and Rust
+* Bytecode example apps written in C, Zig, Rust and assembly
 * Non-blocking design, preventing misbehaving bytecode from stalling the host
 * No assumptions about host IO capabilities (no stdio)
 * Simple, opinionated execution model
-* Safe minimalistic FFI
+* Safe minimally typed FFI
 * Small enough for "if this then that" scripts/plugins, capable enough for much more
 
 Although based on a fully fledged CPU emulator, uvm32 is intended for executing custom script like logic, not for simulating hardware.
@@ -201,6 +201,13 @@ int main(int argc, char *argv[]) {
 ## Configuration
 
 The uvm32 memory size is set at compile time with `-DUVM32_MEMORY_SIZE=X` (in bytes). A memory of 512 bytes will be sufficient for trivial programs.
+
+## Debugging
+
+The `Makefile` in `apps` builds a docker container with a RISC-V toolchain. This can be used to disassemble with:
+
+    docker run -v `pwd`:/data -w /data --rm riscv-dev riscv64-unknown-elf-objdump -d -f hello-asm.elf
+    docker run -v `pwd`:/data -w /data --rm riscv-dev riscv64-unknown-elf-objdump -S -d -b binary -m riscv:rv32 -D -M no-aliases -f hello-asm.bin
 
 ## License
 
