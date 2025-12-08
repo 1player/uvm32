@@ -133,14 +133,19 @@ void hexdump(const uint8_t *p, int len) {
 
 int main(int argc, char *argv[]) {
     uvm32_state_t vmst;
+    uint32_t max_instrs_per_run = 500000;
     clock_t start_time = clock() / (CLOCKS_PER_SEC / 1000);
 
     argc--;
     argv++;
 
     if (argc < 1) {
-        printf("<romfile>\n");
+        printf("<romfile> [max_instrs_per_run]\n");
         return 1;
+    }
+
+    if (argc > 1) {
+        max_instrs_per_run = strtoll(argv[1], NULL, 10);
     }
 
     int romlen = 0;
@@ -165,7 +170,7 @@ int main(int argc, char *argv[]) {
     enableRawMode();
 
     while(isrunning) {
-        total_instrs += uvm32_run(&vmst, &evt, 1000000);   // num instructions before vm considered hung
+        total_instrs += uvm32_run(&vmst, &evt, max_instrs_per_run);   // num instructions before vm considered hung
         num_syscalls++;
 
         switch(evt.typ) {
@@ -179,7 +184,11 @@ int main(int argc, char *argv[]) {
             break;
             case UVM32_EVT_ERR:
                 printf("UVM32_EVT_ERR '%s' (%d)\n", evt.data.err.errstr, (int)evt.data.err.errcode);
-                isrunning = false;
+                if (evt.data.err.errcode == UVM32_ERR_HUNG) {
+                    printf("VM may have hung, increase max_instrs_per_run\n");
+                } else {
+                    isrunning = false;
+                }
             break;
             case UVM32_EVT_SYSCALL:
                 switch((f_code_t)evt.data.syscall.code) {
@@ -190,7 +199,7 @@ int main(int argc, char *argv[]) {
                         printf("%.*s\n", evt.data.syscall.val.buf.len, evt.data.syscall.val.buf.ptr);
                     break;
                     case F_PRINTDEC:
-                        printf("%d\n", evt.data.syscall.val.u32);
+                        printf("%d", evt.data.syscall.val.u32);
                     break;
                     case F_PUTC:
                         printf("%c", evt.data.syscall.val.u32);
