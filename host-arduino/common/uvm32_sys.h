@@ -1,5 +1,5 @@
-// System provided UVM32_SYSCALLs
-#define UVM32_SYSCALL_HALT 0x138
-#define UVM32_SYSCALL_YIELD 0x139
+// System provided UVM32_SYSCALLs, start at 0x10000000
+#define UVM32_SYSCALL_HALT  0x1000000
+#define UVM32_SYSCALL_YIELD 0x1000001
 
 #include "uvm32_common_custom.h"

@@ -10,3 +10,5 @@ clean:
 	(cd host-parallel && make clean)
 	(cd apps && make clean)
 
+world:
+	make && (cd apps && make) && cp apps/*/*.bin precompiled/

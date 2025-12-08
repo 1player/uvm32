@@ -3,10 +3,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-
-// "well-known" system UVM32_SYSCALL functions
-#define UVM32_SYSCALL_HALT 0x138
-#define UVM32_SYSCALL_YIELD 0x139
+#include "common/uvm32_sys.h"
 
 #define LIST_OF_UVM32_ERRS \
     X(UVM32_ERR_NONE) \
