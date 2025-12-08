@@ -4,6 +4,7 @@ all:
 	docker build -t ${DOCKER_IMAGE} .
 	(cd sketch && make)
 	(cd helloworld && make)
+	(cd conio && make)
 	(cd zig-mandel && make)
 	(cd zigtris && make)
 	(cd rust-hello && make)
@@ -12,6 +13,7 @@ all:
 clean:
 	(cd sketch && make clean)
 	(cd helloworld && make clean)
+	(cd conio && make clean)
 	(cd zig-mandel && make clean)
 	(cd zigtris && make clean)
 	(cd rust-hello && make clean)
