@@ -6,7 +6,11 @@ _start:
 # sp is already setup by vm
 sw	ra,12(sp)
 jal	ra, main
-li a7, 0x138 #IOREQ_HALT (Rust assembler doesn't pick up def...)
+#if 1
+#include "non-rust-crt0-hack.s"
+#else
+li a7, {IOREQ_HALT}
+#endif
 ecall
 .section .data
 

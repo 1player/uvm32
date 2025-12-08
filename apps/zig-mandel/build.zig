@@ -37,7 +37,7 @@ pub fn build(b: *std.Build) void {
 
     b.installArtifact(exe);
 
-    exe.addAssemblyFile(b.path("../crt0.s"));
+    exe.addAssemblyFile(b.path("../crt0.S"));
     exe.setLinkerScript(b.path("../linker.ld"));
     exe.addIncludePath(b.path("../../common"));
 
