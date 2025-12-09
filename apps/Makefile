@@ -11,6 +11,7 @@ all:
 	(cd zigtris && make)
 	(cd rust-hello && make)
 	(cd hello-asm && make)
+	(cd maze && make)
 
 clean:
 	(cd sketch && make clean)
@@ -22,4 +23,5 @@ clean:
 	(cd zigtris && make clean)
 	(cd rust-hello && make clean)
 	(cd hello-asm && make clean)
+	(cd maze && make clean)
 

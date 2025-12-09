@@ -22,6 +22,7 @@ Although based on a fully fledged CPU emulator, uvm32 is intended for executing 
  * [apps/helloworld](apps/helloworld) C hello world program
  * [apps/conio](apps/conio) C console IO demo
  * [apps/lissajous](apps/lissajous) C console lissajous curve (showing softfp, floating point)
+ * [apps/maze](apps/maze) C ASCII art recursive maze generation
  * [apps/hello-asm](apps/hello-asm) Minimal hello world assembly
  * [apps/fib](apps/fib) C fibonacci series program (iterative and recursive)
  * [apps/self](apps/self) host-mini with embedded mandelbrot generation program, compiled as an app (inception!)
