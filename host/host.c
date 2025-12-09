@@ -27,7 +27,7 @@ void cleanexit(int sig) {
 void enableRawMode(void) {
     tcgetattr(STDIN_FILENO, &orig_termios);
     atexit(disableRawMode);
-    sigset(SIGINT, cleanexit);
+    signal(SIGINT, cleanexit);
     struct termios raw = orig_termios;
     raw.c_lflag &= ~(ECHO | ICANON | IEXTEN);
     raw.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
