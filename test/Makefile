@@ -1,10 +1,10 @@
+TESTS = example_1 stackoverflow custom_syscall
+RUNCMD = $(foreach TEST,${TESTS},make -C ${TEST} &&)
+CLEANCMD = $(foreach TEST,${TESTS},make -C ${TEST} clean &&)
+
 all:
-	@make -C example_1
-	@make -C stackoverflow
-	@make -C custom_syscall
+	${RUNCMD} true
 
 clean:
-	make -C example_1 clean
-	make -C stackoverflow clean
-	make -C custom_syscall
+	${CLEANCMD} true
 

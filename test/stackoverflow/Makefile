@@ -18,7 +18,7 @@ INC_DIRS=-I$(UNITY_ROOT)/src -I../../uvm32/ -I../../common -Irom
 
 default: $(SRC_FILES1) rom
 	@$(C_COMPILER) $(CFLAGS) $(INC_DIRS) $(SYMBOLS) $(SRC_FILES1) rom/rom-header.c -o $(TARGET1)
-	@- ./$(TARGET1)
+	@ ./$(TARGET1)
 
 rom:
 	@(cd rom && make)
