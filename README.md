@@ -61,6 +61,8 @@ int main(int argc, char *argv[]) {
                         const char *str = uvm32_getcstr(&vmst, &evt, ARG0);
                         printf("%s\n", str);
                     } break;
+                    case UVM32_SYSCALL_YIELD:
+                    break;
                     default:
                         printf("Unhandled syscall 0x%08x\n", evt.data.syscall.code);
                     break;
