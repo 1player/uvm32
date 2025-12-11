@@ -12,7 +12,7 @@ RUN apt-get install -y tzdata
 RUN apt-get install -y ruby xxd
 
 # risc-v cross compiler
-RUN apt-get install -y gcc-riscv64-unknown-elf build-essential
+RUN apt-get install -y gcc-riscv64-unknown-elf build-essential bc
 
 # zig
 RUN apt-get install -y curl
