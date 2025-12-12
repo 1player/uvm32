@@ -160,7 +160,7 @@ bool get_safeptr(uvm32_state_t *vmst, uint32_t addr, uint32_t len, uvm32_evt_sys
             return false;
         } else {
             uint32_t ptrstart = addr - UVM32_EXTRAM_BASE;
-            if ((ptrstart > vmst->extramLen) || (ptrstart + len >= vmst->extramLen)) {
+            if ((ptrstart > vmst->extramLen) || (ptrstart + len > vmst->extramLen)) {
                 setStatusErr(vmst, UVM32_ERR_MEM_RD);
                 buf->ptr = (uint8_t *)NULL;
                 buf->len = 0;
@@ -172,7 +172,7 @@ bool get_safeptr(uvm32_state_t *vmst, uint32_t addr, uint32_t len, uvm32_evt_sys
         }
     } else {
         uint32_t ptrstart = addr - MINIRV32_RAM_IMAGE_OFFSET;
-        if ((ptrstart > UVM32_MEMORY_SIZE) || (ptrstart + len >= UVM32_MEMORY_SIZE)) {
+        if ((ptrstart > UVM32_MEMORY_SIZE) || (ptrstart + len > UVM32_MEMORY_SIZE)) {
             setStatusErr(vmst, UVM32_ERR_MEM_RD);
             buf->ptr = (uint8_t *)NULL;
             buf->len = 0;
