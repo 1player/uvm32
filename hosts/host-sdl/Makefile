@@ -11,7 +11,7 @@ endif
 
 CFLAGS += -Wall -Werror
 CFLAGS += -pedantic -std=c99 -O3
-CFLAGS += -DUVM32_MEMORY_SIZE=$(shell echo "1024 * 1024 * 8" | bc)
+CFLAGS += -DUVM32_ERROR_STRINGS -DUVM32_MEMORY_SIZE=$(shell echo "1024 * 1024 * 8" | bc)
 
 all:
 	gcc ${CFLAGS} -I${TOPDIR}/uvm32 -I${TOPDIR}/common -o host-sdl ${TOPDIR}/uvm32/uvm32.c host-sdl.c ${LIBS}

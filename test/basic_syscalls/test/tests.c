@@ -22,31 +22,31 @@ void test_syscalls(void) {
     uvm32_run(&vmst, &evt, 1000);
     TEST_ASSERT_EQUAL(evt.typ, UVM32_EVT_SYSCALL);
     TEST_ASSERT_EQUAL(evt.data.syscall.code, UVM32_SYSCALL_PRINTLN);
-    TEST_ASSERT_EQUAL(0, strcmp(uvm32_getcstr(&vmst, &evt, ARG0), "Hello world"));
+    TEST_ASSERT_EQUAL(0, strcmp(uvm32_arg_getcstr(&vmst, &evt, ARG0), "Hello world"));
 
     // check for print syscall
     uvm32_run(&vmst, &evt, 1000);
     TEST_ASSERT_EQUAL(evt.typ, UVM32_EVT_SYSCALL);
     TEST_ASSERT_EQUAL(evt.data.syscall.code, UVM32_SYSCALL_PRINT);
-    TEST_ASSERT_EQUAL(0, strcmp(uvm32_getcstr(&vmst, &evt, ARG0), "Hello world"));
+    TEST_ASSERT_EQUAL(0, strcmp(uvm32_arg_getcstr(&vmst, &evt, ARG0), "Hello world"));
 
     // check for printdec syscall
     uvm32_run(&vmst, &evt, 1000);
     TEST_ASSERT_EQUAL(evt.typ, UVM32_EVT_SYSCALL);
     TEST_ASSERT_EQUAL(evt.data.syscall.code, UVM32_SYSCALL_PRINTDEC);
-    TEST_ASSERT_EQUAL(42, uvm32_getval(&vmst, &evt, ARG0));
+    TEST_ASSERT_EQUAL(42, uvm32_arg_getval(&vmst, &evt, ARG0));
 
     // check for printhex syscall
     uvm32_run(&vmst, &evt, 1000);
     TEST_ASSERT_EQUAL(evt.typ, UVM32_EVT_SYSCALL);
     TEST_ASSERT_EQUAL(evt.data.syscall.code, UVM32_SYSCALL_PRINTHEX);
-    TEST_ASSERT_EQUAL(0xDEADBEEF, uvm32_getval(&vmst, &evt, ARG0));
+    TEST_ASSERT_EQUAL(0xDEADBEEF, uvm32_arg_getval(&vmst, &evt, ARG0));
 
     // check for putc syscall
     uvm32_run(&vmst, &evt, 1000);
     TEST_ASSERT_EQUAL(evt.typ, UVM32_EVT_SYSCALL);
     TEST_ASSERT_EQUAL(evt.data.syscall.code, UVM32_SYSCALL_PUTC);
-    TEST_ASSERT_EQUAL('G', uvm32_getval(&vmst, &evt, ARG0));
+    TEST_ASSERT_EQUAL('G', uvm32_arg_getval(&vmst, &evt, ARG0));
 
     // run vm to completion
     uvm32_run(&vmst, &evt, 10000);

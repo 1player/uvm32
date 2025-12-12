@@ -36,19 +36,19 @@ void loop(void) {
                     case UVM32_SYSCALL_YIELD:
                     break;
                     case UVM32_SYSCALL_PUTC:
-                        Serial.print((char)uvm32_getval(&vmst, &evt, ARG0));
+                        Serial.print((char)uvm32_arg_getval(&vmst, &evt, ARG0));
                     break;
                     case UVM32_SYSCALL_PRINTLN: {
-                        const char *str = uvm32_getcstr(&vmst, &evt, ARG0);
+                        const char *str = uvm32_arg_getcstr(&vmst, &evt, ARG0);
                         Serial.print(str);
                         Serial.println("");
                     } break;
                     case UVM32_SYSCALL_PRINT: {
-                        const char *str = uvm32_getcstr(&vmst, &evt, ARG0);
+                        const char *str = uvm32_arg_getcstr(&vmst, &evt, ARG0);
                         Serial.print(str);
                     } break;
                     case UVM32_SYSCALL_MILLIS: {
-                        uvm32_setval(&vmst, &evt, RET, millis());
+                        uvm32_arg_setval(&vmst, &evt, RET, millis());
                     } break;
                     default:
                         Serial.print("Unhandled syscall: ");
@@ -59,7 +59,7 @@ void loop(void) {
             break;
             case UVM32_EVT_ERR:
                 Serial.print("Error: ");
-                Serial.println(evt.data.err.errstr);
+                Serial.println(evt.data.err.errcode);
                 isrunning = false;
             break;
         }

@@ -29,7 +29,7 @@ uint32_t metered_run(uint32_t num_instr) {
         switch(evt.typ) {
             case UVM32_EVT_SYSCALL: {
                 TEST_ASSERT_EQUAL(UVM32_SYSCALL_PRINTDEC, evt.data.syscall.code);
-                uint32_t val = uvm32_getval(&vmst, &evt, ARG0);
+                uint32_t val = uvm32_arg_getval(&vmst, &evt, ARG0);
                 TEST_ASSERT_EQUAL(val, expected);
                 expected++;
             } break;

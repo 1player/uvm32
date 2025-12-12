@@ -226,8 +226,8 @@ int main(int argc, char *argv[]) {
                     uvm32_clearError(&vmst);    // allow to continue
                 } else {
                     isrunning = false;
-                    memdump("host-ram.dump", vmst.memory, UVM32_MEMORY_SIZE);
-                    printf("memory dumped to host-ram.dump, pc=0x%08x\n", vmst.core.pc);
+                    memdump("host-ram.dump", uvm32_getMemory(&vmst), UVM32_MEMORY_SIZE);
+                    printf("memory dumped to host-ram.dump, pc=0x%08x\n", uvm32_getProgramCounter(&vmst));
                     if (extram_buf != NULL) {
                         memdump("host-extram.dump", (uint8_t *)extram_buf, extram_len);
                         printf("extram dumped to host-extram.dump\n");
@@ -237,43 +237,43 @@ int main(int argc, char *argv[]) {
             case UVM32_EVT_SYSCALL:
                 switch(evt.data.syscall.code) {
                     case UVM32_SYSCALL_PRINTBUF: {
-                        uvm32_evt_syscall_buf_t buf = uvm32_getbuf(&vmst, &evt, ARG0, ARG1);
+                        uvm32_slice_t buf = uvm32_arg_getbuf(&vmst, &evt, ARG0, ARG1);
                         while(buf.len--) {
                             printf("%02x", *buf.ptr++);
                         }
                     } break;
                     case UVM32_SYSCALL_YIELD: {
-                        // uint32_t yield_typ = uvm32_getval(&vmst, &evt, ARG0);
+                        // uint32_t yield_typ = uvm32_arg_getval(&vmst, &evt, ARG0);
                         // printf("YIELD type=%d\n", yield_typ);
-                        // uvm32_setval(&vmst, &evt, RET, 123);
+                        // uvm32_arg_setval(&vmst, &evt, RET, 123);
                     } break;
                     case UVM32_SYSCALL_PRINT: {
-                        const char *str = uvm32_getcstr(&vmst, &evt, ARG0);
+                        const char *str = uvm32_arg_getcstr(&vmst, &evt, ARG0);
                         printf("%s", str);
                     } break;
                     case UVM32_SYSCALL_PRINTLN: {
-                        const char *str = uvm32_getcstr(&vmst, &evt, ARG0);
+                        const char *str = uvm32_arg_getcstr(&vmst, &evt, ARG0);
                         printf("%s\n", str);
                     } break;
                     case UVM32_SYSCALL_PRINTDEC:
-                        printf("%d", uvm32_getval(&vmst, &evt, ARG0));
+                        printf("%d", uvm32_arg_getval(&vmst, &evt, ARG0));
                     break;
                     case UVM32_SYSCALL_PUTC:
-                        printf("%c", uvm32_getval(&vmst, &evt, ARG0));
+                        printf("%c", uvm32_arg_getval(&vmst, &evt, ARG0));
                     break;
                     case UVM32_SYSCALL_PRINTHEX:
-                        printf("%08x", uvm32_getval(&vmst, &evt, ARG0));
+                        printf("%08x", uvm32_arg_getval(&vmst, &evt, ARG0));
                     break;
                     case UVM32_SYSCALL_MILLIS: {
                         clock_t now = clock() / (CLOCKS_PER_SEC / 1000);
-                        uvm32_setval(&vmst, &evt, RET, now - start_time);
+                        uvm32_arg_setval(&vmst, &evt, RET, now - start_time);
                     } break;
                     case UVM32_SYSCALL_GETC: {
                         uint8_t c;
                         if (poll_getch(&c)) {
-                            uvm32_setval(&vmst, &evt, RET, c);
+                            uvm32_arg_setval(&vmst, &evt, RET, c);
                         } else {
-                            uvm32_setval(&vmst, &evt, RET, 0xFFFFFFFF);
+                            uvm32_arg_setval(&vmst, &evt, RET, 0xFFFFFFFF);
                         }
                     } break;
                     default:

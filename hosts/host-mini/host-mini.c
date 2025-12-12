@@ -25,10 +25,10 @@ int main(int argc, char *argv[]) {
                     case UVM32_SYSCALL_YIELD:
                     break;
                     case UVM32_SYSCALL_PUTC:
-                        printf("%c", uvm32_getval(&vmst, &evt, ARG0));
+                        printf("%c", uvm32_arg_getval(&vmst, &evt, ARG0));
                     break;
                     case UVM32_SYSCALL_PRINTLN: {
-                        const char *str = uvm32_getcstr(&vmst, &evt, ARG0);
+                        const char *str = uvm32_arg_getcstr(&vmst, &evt, ARG0);
                         printf("%s\n", str);
                     } break;
                     default:

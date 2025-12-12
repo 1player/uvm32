@@ -23,15 +23,15 @@ void test_custom_syscall_normal(void) {
     // check for custom syscall
     TEST_ASSERT_EQUAL(evt.typ, UVM32_EVT_SYSCALL);
     TEST_ASSERT_EQUAL(evt.data.syscall.code, 0xDEADBEEF);
-    TEST_ASSERT_EQUAL(0xABCD1234, uvm32_getval(&vmst, &evt, ARG0));
-    TEST_ASSERT_EQUAL(0xDECAFBAD, uvm32_getval(&vmst, &evt, ARG1));
-    uvm32_setval(&vmst, &evt, RET, 0xAABBCCDD);
+    TEST_ASSERT_EQUAL(0xABCD1234, uvm32_arg_getval(&vmst, &evt, ARG0));
+    TEST_ASSERT_EQUAL(0xDECAFBAD, uvm32_arg_getval(&vmst, &evt, ARG1));
+    uvm32_arg_setval(&vmst, &evt, RET, 0xAABBCCDD);
 
     uvm32_run(&vmst, &evt, 100);
     // check for print syscall
     TEST_ASSERT_EQUAL(evt.typ, UVM32_EVT_SYSCALL);
     TEST_ASSERT_EQUAL(evt.data.syscall.code, UVM32_SYSCALL_PRINT);
-    const char *str = uvm32_getcstr(&vmst, &evt, ARG0);
+    const char *str = uvm32_arg_getcstr(&vmst, &evt, ARG0);
     TEST_ASSERT_EQUAL(0, strcmp(str, "ok"));
     // run vm to completion
     uvm32_run(&vmst, &evt, 100);
@@ -44,15 +44,15 @@ void test_custom_syscall_badval(void) {
     // check for custom syscall
     TEST_ASSERT_EQUAL(evt.typ, UVM32_EVT_SYSCALL);
     TEST_ASSERT_EQUAL(evt.data.syscall.code, 0xDEADBEEF);
-    TEST_ASSERT_EQUAL(0xABCD1234, uvm32_getval(&vmst, &evt, ARG0));
-    TEST_ASSERT_EQUAL(0xDECAFBAD, uvm32_getval(&vmst, &evt, ARG1));
-    uvm32_setval(&vmst, &evt, RET, 0);  // send value that is not being expected
+    TEST_ASSERT_EQUAL(0xABCD1234, uvm32_arg_getval(&vmst, &evt, ARG0));
+    TEST_ASSERT_EQUAL(0xDECAFBAD, uvm32_arg_getval(&vmst, &evt, ARG1));
+    uvm32_arg_setval(&vmst, &evt, RET, 0);  // send value that is not being expected
 
     uvm32_run(&vmst, &evt, 100);
     // check for print syscall
     TEST_ASSERT_EQUAL(evt.typ, UVM32_EVT_SYSCALL);
     TEST_ASSERT_EQUAL(evt.data.syscall.code, UVM32_SYSCALL_PRINT);
-    const char *str = uvm32_getcstr(&vmst, &evt, ARG0);
+    const char *str = uvm32_arg_getcstr(&vmst, &evt, ARG0);
     TEST_ASSERT_EQUAL(0, strcmp(str, "fail"));
     // run vm to completion
     uvm32_run(&vmst, &evt, 100);

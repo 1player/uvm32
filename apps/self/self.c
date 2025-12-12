@@ -23,10 +23,10 @@ void main(void) {
                     case UVM32_SYSCALL_YIELD:
                     break;
                     case UVM32_SYSCALL_PUTC:
-                        putc(uvm32_getval(&vmst, &evt, ARG0));
+                        putc(uvm32_arg_getval(&vmst, &evt, ARG0));
                     break;
                     case UVM32_SYSCALL_PRINTLN: {
-                        const char *str = uvm32_getcstr(&vmst, &evt, ARG0);
+                        const char *str = uvm32_arg_getcstr(&vmst, &evt, ARG0);
                         println(str);
                     } break;
                     default:
@@ -35,7 +35,9 @@ void main(void) {
                 }
             break;
             case UVM32_EVT_ERR:
-                println(evt.data.err.errstr);
+                println("error: ");
+                printdec(evt.data.err.errcode);
+                println("");
             break;
             default:
             break;

@@ -181,6 +181,8 @@ uvm32_run(&vmst, &evt, 1000);
 
 The uvm32 memory size is set at compile time with `-DUVM32_MEMORY_SIZE=X` (in bytes). A memory of 512 bytes will be sufficient for trivial programs.
 
+Define `UVM32_ERROR_STRINGS` to add an `errstr` field to `uvm32_evt_err_t` giving a printable error string.
+
 ## Debugging
 
 Binaries can be disassembled with

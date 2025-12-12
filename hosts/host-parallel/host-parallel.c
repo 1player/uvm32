@@ -43,13 +43,13 @@ int main(int argc, char *argv[]) {
                     case UVM32_SYSCALL_YIELD:
                     break;
                     case UVM32_SYSCALL_PRINTLN: {
-                        const char *str = uvm32_getcstr(&vmst[scheduler_index], &evt, ARG0);
+                        const char *str = uvm32_arg_getcstr(&vmst[scheduler_index], &evt, ARG0);
                         if (str[0] != 0) {
                             printf("[VM %d] %s\n", scheduler_index, str);
                         }
                     } break;
                     case UVM32_SYSCALL_PRINTDEC:
-                        printf("[VM %d] %d\n", scheduler_index, uvm32_getval(&vmst[scheduler_index], &evt, ARG0));
+                        printf("[VM %d] %d\n", scheduler_index, uvm32_arg_getval(&vmst[scheduler_index], &evt, ARG0));
                     break;
                     default:
                         printf("Unhandled syscall 0x%08x\n", evt.data.syscall.code);

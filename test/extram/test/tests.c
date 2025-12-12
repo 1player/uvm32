@@ -33,13 +33,13 @@ void test_extram_access(void) {
     // check for picktest syscall
     TEST_ASSERT_EQUAL(evt.typ, UVM32_EVT_SYSCALL);
     TEST_ASSERT_EQUAL(evt.data.syscall.code, SYSCALL_PICKTEST);
-    uvm32_setval(&vmst, &evt, RET, TEST1);
+    uvm32_arg_setval(&vmst, &evt, RET, TEST1);
 
     uvm32_run(&vmst, &evt, 100);
     // check for printdec of val
     TEST_ASSERT_EQUAL(evt.typ, UVM32_EVT_SYSCALL);
     TEST_ASSERT_EQUAL(evt.data.syscall.code, UVM32_SYSCALL_PRINTDEC);
-    TEST_ASSERT_EQUAL(1234, uvm32_getval(&vmst, &evt, ARG0));
+    TEST_ASSERT_EQUAL(1234, uvm32_arg_getval(&vmst, &evt, ARG0));
 
     // run vm to completion
     uvm32_run(&vmst, &evt, 100);
@@ -57,7 +57,7 @@ void test_extram_out_of_bounds_rd(void) {
     // check for picktest syscall
     TEST_ASSERT_EQUAL(evt.typ, UVM32_EVT_SYSCALL);
     TEST_ASSERT_EQUAL(evt.data.syscall.code, SYSCALL_PICKTEST);
-    uvm32_setval(&vmst, &evt, RET, TEST2);
+    uvm32_arg_setval(&vmst, &evt, RET, TEST2);
 
     uvm32_run(&vmst, &evt, 100);
     TEST_ASSERT_EQUAL(evt.typ, UVM32_EVT_ERR);
@@ -73,7 +73,7 @@ void test_extram_out_of_bounds_wr(void) {
     // check for picktest syscall
     TEST_ASSERT_EQUAL(evt.typ, UVM32_EVT_SYSCALL);
     TEST_ASSERT_EQUAL(evt.data.syscall.code, SYSCALL_PICKTEST);
-    uvm32_setval(&vmst, &evt, RET, TEST3);
+    uvm32_arg_setval(&vmst, &evt, RET, TEST3);
 
     uvm32_run(&vmst, &evt, 100);
     TEST_ASSERT_EQUAL(evt.typ, UVM32_EVT_ERR);
@@ -89,7 +89,7 @@ void test_extram_out_of_bounds_dirty_flag(void) {
     // check for picktest syscall
     TEST_ASSERT_EQUAL(evt.typ, UVM32_EVT_SYSCALL);
     TEST_ASSERT_EQUAL(evt.data.syscall.code, SYSCALL_PICKTEST);
-    uvm32_setval(&vmst, &evt, RET, TEST4);
+    uvm32_arg_setval(&vmst, &evt, RET, TEST4);
 
     uvm32_run(&vmst, &evt, 100);
     TEST_ASSERT_EQUAL(true, uvm32_extramDirty(&vmst));
@@ -105,7 +105,7 @@ void test_extram_byte_write(void) {
     // check for picktest syscall
     TEST_ASSERT_EQUAL(evt.typ, UVM32_EVT_SYSCALL);
     TEST_ASSERT_EQUAL(evt.data.syscall.code, SYSCALL_PICKTEST);
-    uvm32_setval(&vmst, &evt, RET, TEST5);
+    uvm32_arg_setval(&vmst, &evt, RET, TEST5);
 
     uvm32_run(&vmst, &evt, 100);
     TEST_ASSERT_EQUAL(true, uvm32_extramDirty(&vmst));
@@ -129,7 +129,7 @@ void test_extram_byte_read(void) {
     // check for picktest syscall
     TEST_ASSERT_EQUAL(evt.typ, UVM32_EVT_SYSCALL);
     TEST_ASSERT_EQUAL(evt.data.syscall.code, SYSCALL_PICKTEST);
-    uvm32_setval(&vmst, &evt, RET, TEST6);
+    uvm32_arg_setval(&vmst, &evt, RET, TEST6);
 
     // set only byte 7 in extram
     uint8_t *p = (uint8_t *)extram;
@@ -140,7 +140,7 @@ void test_extram_byte_read(void) {
     // check for printdec of val
     TEST_ASSERT_EQUAL(UVM32_EVT_SYSCALL, evt.typ);
     TEST_ASSERT_EQUAL(evt.data.syscall.code, UVM32_SYSCALL_PRINTDEC);
-    TEST_ASSERT_EQUAL(0xCD, uvm32_getval(&vmst, &evt, ARG0));
+    TEST_ASSERT_EQUAL(0xCD, uvm32_arg_getval(&vmst, &evt, ARG0));
 }
 
 void test_extram_short_write(void) {
@@ -151,7 +151,7 @@ void test_extram_short_write(void) {
     // check for picktest syscall
     TEST_ASSERT_EQUAL(evt.typ, UVM32_EVT_SYSCALL);
     TEST_ASSERT_EQUAL(evt.data.syscall.code, SYSCALL_PICKTEST);
-    uvm32_setval(&vmst, &evt, RET, TEST7);
+    uvm32_arg_setval(&vmst, &evt, RET, TEST7);
 
     uvm32_run(&vmst, &evt, 100);
     TEST_ASSERT_EQUAL(true, uvm32_extramDirty(&vmst));
@@ -175,7 +175,7 @@ void test_extram_short_read(void) {
     // check for picktest syscall
     TEST_ASSERT_EQUAL(evt.typ, UVM32_EVT_SYSCALL);
     TEST_ASSERT_EQUAL(evt.data.syscall.code, SYSCALL_PICKTEST);
-    uvm32_setval(&vmst, &evt, RET, TEST8);
+    uvm32_arg_setval(&vmst, &evt, RET, TEST8);
 
     // set only short 7 in extram
     uint16_t *p = (uint16_t *)extram;
@@ -186,7 +186,7 @@ void test_extram_short_read(void) {
     // check for printdec of val
     TEST_ASSERT_EQUAL(UVM32_EVT_SYSCALL, evt.typ);
     TEST_ASSERT_EQUAL(evt.data.syscall.code, UVM32_SYSCALL_PRINTDEC);
-    TEST_ASSERT_EQUAL(0xCDEF, uvm32_getval(&vmst, &evt, ARG0));
+    TEST_ASSERT_EQUAL(0xCDEF, uvm32_arg_getval(&vmst, &evt, ARG0));
 }
 
 void test_extram_buf_unterminated(void) {
@@ -197,14 +197,14 @@ void test_extram_buf_unterminated(void) {
     // check for picktest syscall
     TEST_ASSERT_EQUAL(evt.typ, UVM32_EVT_SYSCALL);
     TEST_ASSERT_EQUAL(evt.data.syscall.code, SYSCALL_PICKTEST);
-    uvm32_setval(&vmst, &evt, RET, TEST9);
+    uvm32_arg_setval(&vmst, &evt, RET, TEST9);
 
     uvm32_run(&vmst, &evt, 100);
     TEST_ASSERT_EQUAL(true, uvm32_extramDirty(&vmst));
     // check for printbuf of val
     TEST_ASSERT_EQUAL(UVM32_EVT_SYSCALL, evt.typ);
     TEST_ASSERT_EQUAL(evt.data.syscall.code, UVM32_SYSCALL_PRINTBUF);
-    uvm32_evt_syscall_buf_t buf = uvm32_getbuf(&vmst, &evt, ARG0, ARG1);
+    uvm32_slice_t buf = uvm32_arg_getbuf(&vmst, &evt, ARG0, ARG1);
     TEST_ASSERT_EQUAL(5, buf.len);
     TEST_ASSERT_EQUAL(0, memcmp(buf.ptr, "hello", 5));
 }
@@ -217,14 +217,14 @@ void test_extram_buf_terminated(void) {
     // check for picktest syscall
     TEST_ASSERT_EQUAL(evt.typ, UVM32_EVT_SYSCALL);
     TEST_ASSERT_EQUAL(evt.data.syscall.code, SYSCALL_PICKTEST);
-    uvm32_setval(&vmst, &evt, RET, TEST9);
+    uvm32_arg_setval(&vmst, &evt, RET, TEST9);
 
     uvm32_run(&vmst, &evt, 100);
     TEST_ASSERT_EQUAL(true, uvm32_extramDirty(&vmst));
     // check for printbuf of val
     TEST_ASSERT_EQUAL(UVM32_EVT_SYSCALL, evt.typ);
     TEST_ASSERT_EQUAL(evt.data.syscall.code, UVM32_SYSCALL_PRINTBUF);
-    const char *str = uvm32_getcstr(&vmst, &evt, ARG0);
+    const char *str = uvm32_arg_getcstr(&vmst, &evt, ARG0);
     TEST_ASSERT_NOT_EQUAL(NULL, str);
     TEST_ASSERT_EQUAL(0, strcmp(str, "hello"));
 }
