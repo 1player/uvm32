@@ -3,7 +3,7 @@ use std::path::PathBuf;
 
 fn main() {
     // linker
-    println!("cargo:rustc-link-arg-bin=rust-hello=-T../linker.ld");
+    println!("cargo:rustc-link-arg-bin=rust-hello=-T../common/linker.ld");
 
     let bindings = bindgen::Builder::default()
         .header("../../common/uvm32_sys.h")

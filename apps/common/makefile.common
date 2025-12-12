@@ -4,7 +4,7 @@ CFLAGS+=-I${TOPDIR}/common
 CFLAGS+=${OPT} -fno-stack-protector -fno-builtin-memcpy -fno-builtin
 CFLAGS+=-static-libgcc -fdata-sections -ffunction-sections
 CFLAGS+=-g -march=rv32im -mabi=ilp32 -static
-LDFLAGS:= -T ${TOPDIR}/apps/linker.ld -nostdlib -Wl,--gc-sections
+LDFLAGS:= -T ${TOPDIR}/apps/common/linker.ld -nostdlib -Wl,--gc-sections
 LIBS:= -lgcc # needed for softfp
 
 # check if the compiler is installed

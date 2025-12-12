@@ -15,4 +15,4 @@ clean: clean_common
 test: all
 	${TOPDIR}/hosts/host-sdl/host-sdl ${HOST_EXTRA} ${PROJECT}.bin
 
-include ${TOPDIR}/apps/makefile.common
+include ${TOPDIR}/apps/common/makefile.common

@@ -10,4 +10,4 @@ clean: clean_common
 test: all
 	${TOPDIR}/host/host ${PROJECT}.bin
 
-include ${TOPDIR}/apps/makefile.common
+include ${TOPDIR}/apps/common/makefile.common

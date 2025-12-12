@@ -1,6 +1,6 @@
 TOPDIR=../../../
 PROJECT:=$(shell basename ${PWD})
-SRCS=${PROJECT}.c ${TOPDIR}/apps/crt0.S
+SRCS=${PROJECT}.c ${TOPDIR}/apps/common/crt0.S
 OPT=-O0 # don't optimise
 all: all_common
 	@# Convert ROM to C file and header
@@ -11,4 +11,4 @@ test: test_common
 clean: clean_common
 	rm -f ${PROJECT}-header.h ${PROJECT}-header.c
 
-include ${TOPDIR}/apps/makefile.common
+include ${TOPDIR}/apps/common/makefile.common

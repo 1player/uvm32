@@ -9,7 +9,7 @@ use core::panic::PanicInfo;
 include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 
 // startup code
-global_asm!(include_str!("../../crt0.S"));
+global_asm!(include_str!("../../common/crt0.S"));
 
 fn syscall(id: u32, param1: u32, param2: u32) -> u32 {
     let mut value;
