@@ -18,7 +18,7 @@ On an [STM32L0](https://www.st.com/en/microcontrollers-microprocessors/stm32l0-s
 * No assumptions about host IO capabilities (no stdio)
 * Simple, opinionated execution model
 * Safe minimally typed FFI
-* Small enough for "if this then that" scripts/plugins, capable enough for much more
+* Small enough for "if this then that" scripts/plugins, capable enough for [much more](apps/zigdoom)
 * Aims for safety over speed, bad code running in the VM should never be able to crash the host
 
 Although based on a [fully fledged CPU emulator](https://github.com/cnlohr/mini-rv32ima), uvm32 is intended for executing custom script like logic, not for simulating hardware.
@@ -102,6 +102,7 @@ int main(int argc, char *argv[]) {
  * [apps/zigtris](apps/zigtris) Zig Tetris (https://github.com/ringtailsoftware/zigtris)
  * [apps/zigalloc](apps/zigalloc) Demonstration of using extram with zig allocator
  * [apps/heap](apps/heap) Demonstration of `malloc()` on extram in C
+ * [apps/zigdoom](apps/zigdoom) Port of PureDOOM (making use of Zig to provide an allocator and libc like functions)
 
 ## Quickstart (docker)
 
@@ -123,7 +124,11 @@ The example VM hosts should all build with any C compiler. To build all of the e
 On mac
 
     brew install arduino-cli riscv64-elf-gcc riscv64-elf-binutils sdl3
+
+    cd hosts/host-sdl
     make
+    cd apps/zigdoom
+    make test
 
 
 ## Quickstart API

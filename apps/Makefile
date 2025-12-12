@@ -14,6 +14,7 @@ all:
 	(cd memtest && make)
 	(cd zigalloc && make)
 	(cd gfx && make)
+	(cd zigdoom && make)
 
 clean:
 	(cd sketch && make clean)
@@ -31,4 +32,5 @@ clean:
 	(cd memtest && make clean)
 	(cd zigalloc && make clean)
 	(cd gfx && make clean)
+	(cd zigdoom && make clean)
 
