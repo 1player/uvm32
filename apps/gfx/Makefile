@@ -4,7 +4,9 @@ PROJECT:=$(shell basename ${PWD})
 OPT=-Os
 SRCS=${PROJECT}.c ${TOPDIR}/apps/crt0.S
 
-HOST_EXTRA=-i 4294967295
+HEAP_SIZE=$(shell echo "320 * 200 * 4" | bc)
+HOST_EXTRA=-e ${HEAP_SIZE} -i 9999999
+
 all: all_common
 test: all
 	${TOPDIR}/hosts/host-sdl/host-sdl ${HOST_EXTRA} ${PWD}/${PROJECT}.bin
