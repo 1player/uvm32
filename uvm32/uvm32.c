@@ -16,8 +16,9 @@
 // On an invalid operation, an error is set in uvm32_state_t, but a valid pointer still needs to be temporarily used
 static uint32_t garbage;
 
-// magic value for stack canary
-#define STACK_CANARY_VALUE 0x42
+#ifdef UVM32_STACK_PROTECTION
+#define STACK_CANARY_VALUE 0x42 // magic value for stack canary
+#endif
 
 #ifndef UVM32_MEMCPY
 #define UVM32_MEMCPY uvm32_memcpy
@@ -101,8 +102,9 @@ bool uvm32_load(uvm32_state_t *vmst, const uint8_t *rom, int len) {
     }
 
     UVM32_MEMCPY(vmst->_memory, rom, len);
+#ifdef UVM32_STACK_PROTECTION
     vmst->_stack_canary = (uint8_t *)NULL;
-    
+#endif
     return true;
 }
 
@@ -207,11 +209,13 @@ uint32_t uvm32_run(uvm32_state_t *vmst, uvm32_evt_t *evt, uint32_t instr_meter) 
         orig_instr_meter = min_instrs;
     }
 
+#ifdef UVM32_STACK_PROTECTION
     if (vmst->_stack_canary != NULL && *vmst->_stack_canary != STACK_CANARY_VALUE) {
         setStatusErr(vmst, UVM32_ERR_INTERNAL_CORE);
         setup_err_evt(vmst, evt);
         return orig_instr_meter - instr_meter;
     }
+#endif
 
     if (vmst->_status != UVM32_STATUS_PAUSED) {
         setStatusErr(vmst, UVM32_ERR_NOTREADY);
@@ -243,6 +247,7 @@ uint32_t uvm32_run(uvm32_state_t *vmst, uvm32_evt_t *evt, uint32_t instr_meter) 
                         setStatus(vmst, UVM32_STATUS_ENDED);
                     break;
                     case UVM32_SYSCALL_STACKPROTECT: {
+#ifdef UVM32_STACK_PROTECTION
                         // don't allow errant code to change it once set
                         if (vmst->_stack_canary == (uint8_t *)NULL) {
                             uint32_t param0 = vmst->_core.regs[10]; // a0
@@ -263,6 +268,7 @@ uint32_t uvm32_run(uvm32_state_t *vmst, uvm32_evt_t *evt, uint32_t instr_meter) 
                                 *vmst->_stack_canary = STACK_CANARY_VALUE;
                             }
                         }
+#endif
                     } break;
                     default:
                         // user defined syscalls

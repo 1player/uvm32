@@ -183,6 +183,8 @@ The uvm32 memory size is set at compile time with `-DUVM32_MEMORY_SIZE=X` (in by
 
 Define `UVM32_ERROR_STRINGS` to add an `errstr` field to `uvm32_evt_err_t` giving a printable error string.
 
+Define `UVM32_STACK_PROTECTION` to enable a basic stack canary, to cause an early crash when the stack grows too large. Without this, the VM will normally crash (safely) in some other way which is less easily detected.
+
 ## Debugging
 
 Binaries can be disassembled with

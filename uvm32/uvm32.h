@@ -118,7 +118,9 @@ typedef struct {
     struct MiniRV32IMAState _core;          /*! CPU registers */
     uint8_t _memory[UVM32_MEMORY_SIZE];     /*! Memory */
     uvm32_evt_t _ioevt;                     /*! Event to be returned on next pause */
+#ifdef UVM32_STACK_PROTECTION
     uint8_t *_stack_canary;                 /*! Location of stack canary */
+#endif
     uint8_t *_extram;                       /*! External RAM pointer, or NULL */
     uint32_t _extramLen;                    /*! Length of external RAM */
     bool _extramDirty;                      /*! Flag to indicate VM code has modified extram since last run */
