@@ -127,16 +127,34 @@ bool get_safeptr_null_terminated(uvm32_state_t *vmst, uint32_t addr, uvm32_evt_s
 }
 
 bool get_safeptr(uvm32_state_t *vmst, uint32_t addr, uint32_t len, uvm32_evt_syscall_buf_t *buf) {
-    uint32_t ptrstart = addr - MINIRV32_RAM_IMAGE_OFFSET;
-    if ((ptrstart > UVM32_MEMORY_SIZE) || (ptrstart + len >= UVM32_MEMORY_SIZE)) {
-        setStatusErr(vmst, UVM32_ERR_MEM_RD);
-        buf->ptr = (uint8_t *)NULL;
-        buf->len = 0;
-        return false;
+    uint32_t ptrstart;
+    if (MINIRV32_MMIO_RANGE(addr)) {
+        if (vmst->extram == NULL) {
+            return false;
+        } else {
+            uint32_t ptrstart = addr - UVM32_EXTRAM_BASE;
+            if ((ptrstart > vmst->extramLen) || (ptrstart + len >= vmst->extramLen)) {
+                setStatusErr(vmst, UVM32_ERR_MEM_RD);
+                buf->ptr = (uint8_t *)NULL;
+                buf->len = 0;
+                return false;
+            }
+            buf->ptr = (uint8_t *)&vmst->extram[ptrstart/4];    // extram is uint32_t*
+            buf->len = len;
+            return true;
+        }
+    } else {
+        uint32_t ptrstart = addr - MINIRV32_RAM_IMAGE_OFFSET;
+        if ((ptrstart > UVM32_MEMORY_SIZE) || (ptrstart + len >= UVM32_MEMORY_SIZE)) {
+            setStatusErr(vmst, UVM32_ERR_MEM_RD);
+            buf->ptr = (uint8_t *)NULL;
+            buf->len = 0;
+            return false;
+        }
+        buf->ptr = &vmst->memory[ptrstart];
+        buf->len = len;
+        return true;
     }
-    buf->ptr = &vmst->memory[ptrstart];
-    buf->len = len;
-    return true;
 }
 
 void uvm32_clearError(uvm32_state_t *vmst) {
