@@ -18,7 +18,7 @@ endif
 
 all:
 	${RUNCMD} true
-	${GCOVRCMD}
+	@${GCOVRCMD}
 
 clean:
 	${CLEANCMD} true
