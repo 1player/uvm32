@@ -49,7 +49,7 @@ void main(void) {
             p[2] = 'l';
             p[3] = 'l';
             p[4] = 'o';
-            printbuf(p, 5); // try to print from extram (unterminated)
+            printbuf(p, 5); // try to print from extram (slice)
         } break;
         case TEST10: {
             uint8_t *p = (uint8_t *)UVM32_EXTRAM_BASE;
@@ -68,6 +68,10 @@ void main(void) {
         case TEST12: {
             // pass a string beyond end of MMIO region
             println((uint32_t)UVM32_EXTRAM_BASE + 8);   // extram has been shrunk, this is now out of bounds, or no terminator found
+        } break;
+        case TEST13: {
+            // pass a slice beyond end of extram
+            printbuf((uint32_t)UVM32_EXTRAM_BASE + 32, 64);   // extram has been shrunk, this is now out of bounds,
         } break;
 
     }

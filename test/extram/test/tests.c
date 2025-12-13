@@ -189,7 +189,7 @@ void test_extram_short_read(void) {
     TEST_ASSERT_EQUAL(0xCDEF, uvm32_arg_getval(&vmst, &evt, ARG0));
 }
 
-void test_extram_buf_unterminated(void) {
+void test_extram_buf_slice(void) {
     // run the vm
     uvm32_run(&vmst, &evt, 100);
     TEST_ASSERT_EQUAL(false, uvm32_extramDirty(&vmst));
@@ -256,7 +256,7 @@ void test_extram_buf_terminated_rugpull(void) {
     TEST_ASSERT_EQUAL(evt.data.err.errcode, UVM32_ERR_MEM_RD);
 }
 
-void test_extram_buf_unterminated_rugpull(void) {
+void test_extram_buf_slice_rugpull(void) {
     // run the vm
     uvm32_run(&vmst, &evt, 100);
     TEST_ASSERT_EQUAL(false, uvm32_extramDirty(&vmst));
@@ -337,7 +337,7 @@ void test_extram_buf_terminated_beyond_extram_end_oobstart(void) {
     TEST_ASSERT_EQUAL(evt.data.err.errcode, UVM32_ERR_MEM_RD);
 }
 
-void test_extram_buf_terminated_beyond_extram_end(void) {
+void test_extram_buf_slice_beyond_extram_end(void) {
     // run the vm
     uvm32_run(&vmst, &evt, 100);
     TEST_ASSERT_EQUAL(false, uvm32_extramDirty(&vmst));
@@ -345,13 +345,13 @@ void test_extram_buf_terminated_beyond_extram_end(void) {
     // check for picktest syscall
     TEST_ASSERT_EQUAL(evt.typ, UVM32_EVT_SYSCALL);
     TEST_ASSERT_EQUAL(evt.data.syscall.code, SYSCALL_PICKTEST);
-    uvm32_arg_setval(&vmst, &evt, RET, TEST12);
+    uvm32_arg_setval(&vmst, &evt, RET, TEST13);
 
     uvm32_run(&vmst, &evt, 100);
     TEST_ASSERT_EQUAL(false, uvm32_extramDirty(&vmst));
     // check for printbuf of val
     TEST_ASSERT_EQUAL(UVM32_EVT_SYSCALL, evt.typ);
-    TEST_ASSERT_EQUAL(evt.data.syscall.code, UVM32_SYSCALL_PRINTLN);
+    TEST_ASSERT_EQUAL(evt.data.syscall.code, UVM32_SYSCALL_PRINTBUF);
 
     // replace extram with a tiny one, so read is off the end
     uint32_t r[3];
@@ -362,8 +362,8 @@ void test_extram_buf_terminated_beyond_extram_end(void) {
     // string starts in valid extram, but no terminator will be found before hitting end of extram
 
     // check that reading from non-existent extram gives empty string and puts into err state
-    const char *str = uvm32_arg_getcstr(&vmst, &evt, ARG0);
-    TEST_ASSERT_EQUAL(0, strlen(str));
+    uvm32_slice_t buf = uvm32_arg_getbuf(&vmst, &evt, ARG0, ARG1);
+    TEST_ASSERT_EQUAL(0, buf.len);
     uvm32_run(&vmst, &evt, 100);
     TEST_ASSERT_EQUAL(evt.typ, UVM32_EVT_ERR);
     TEST_ASSERT_EQUAL(evt.data.err.errcode, UVM32_ERR_MEM_RD);
