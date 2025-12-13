@@ -229,4 +229,31 @@ void test_extram_buf_terminated(void) {
     TEST_ASSERT_EQUAL(0, strcmp(str, "hello"));
 }
 
+void test_extram_buf_terminated_rugpull(void) {
+    // run the vm
+    uvm32_run(&vmst, &evt, 100);
+    TEST_ASSERT_EQUAL(false, uvm32_extramDirty(&vmst));
+
+    // check for picktest syscall
+    TEST_ASSERT_EQUAL(evt.typ, UVM32_EVT_SYSCALL);
+    TEST_ASSERT_EQUAL(evt.data.syscall.code, SYSCALL_PICKTEST);
+    uvm32_arg_setval(&vmst, &evt, RET, TEST9);
+
+    uvm32_run(&vmst, &evt, 100);
+    TEST_ASSERT_EQUAL(true, uvm32_extramDirty(&vmst));
+    // check for printbuf of val
+    TEST_ASSERT_EQUAL(UVM32_EVT_SYSCALL, evt.typ);
+    TEST_ASSERT_EQUAL(evt.data.syscall.code, UVM32_SYSCALL_PRINTBUF);
+
+    // remove extram
+    uvm32_extram(&vmst, NULL, 0);
+
+    // check that reading from non-existent extram gives empty string and puts into err state
+    const char *str = uvm32_arg_getcstr(&vmst, &evt, ARG0);
+    TEST_ASSERT_EQUAL(0, strlen(str));
+    uvm32_run(&vmst, &evt, 100);
+    TEST_ASSERT_EQUAL(evt.typ, UVM32_EVT_ERR);
+    TEST_ASSERT_EQUAL(evt.data.err.errcode, UVM32_ERR_MEM_RD);
+}
+
 
