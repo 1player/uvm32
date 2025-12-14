@@ -339,9 +339,6 @@ uint32_t uvm32_run(uvm32_state_t *vmst, uvm32_evt_t *evt, uint32_t instr_meter) 
     } else {
         if (vmst->_status == UVM32_STATUS_ERROR) {
             setup_err_evt(vmst, evt);
-        } else {
-            setStatusErr(vmst, UVM32_ERR_INTERNAL_STATE);
-            setup_err_evt(vmst, evt);
         }
         return orig_instr_meter - instr_meter;
     }
@@ -414,12 +411,13 @@ uvm32_slice_t uvm32_arg_getslice_fixed(uvm32_state_t *vmst, uvm32_evt_t *evt, uv
 }
 
 uint32_t _uvm32_extramLoad(void *userdata, uint32_t addr, uint32_t accessTyp) {
-
     uvm32_state_t *vmst = (uvm32_state_t *)userdata;
     addr -= UVM32_EXTRAM_BASE;
 
     if (vmst->_extram != NULL) {
         if (addr < vmst->_extramLen) {
+            // These are funct3 values for lX instructions
+            // Any other value will have caused UVM32_ERR_INTERNAL_CORE
             switch(accessTyp) {
                 case 0:
                     return ((int8_t *)vmst->_extram)[addr];
@@ -430,18 +428,19 @@ uint32_t _uvm32_extramLoad(void *userdata, uint32_t addr, uint32_t accessTyp) {
                 case 2:
                     return ((uint32_t *)vmst->_extram)[addr / 4];
                 break;
-                case 4:
-                    return ((uint8_t *)vmst->_extram)[addr];
-                break;
                 case 5:
                     return ((uint16_t *)vmst->_extram)[addr/2];
                 break;
-                default:
-                    setStatusErr(vmst, UVM32_ERR_MEM_RD);
-                    return 0;
+                // have a default case to keep coverage check happy
+                // no other values are possible here
+                default:    // fall through
+                case 4:
+                    return ((uint8_t *)vmst->_extram)[addr];
                 break;
+
             }
         } else {
+            // Out of bounds
             setStatusErr(vmst, UVM32_ERR_MEM_RD);
         }
     }
@@ -454,17 +453,16 @@ uint32_t _uvm32_extramStore(void *userdata, uint32_t addr, uint32_t val, uint32_
     if (vmst->_extram != NULL) {
         if (addr < vmst->_extramLen) {
             switch(accessTyp) {
-                case 0:
-                    ((uint8_t *)vmst->_extram)[addr] = val;
-                break;
                 case 1:
                     ((uint16_t *)vmst->_extram)[addr/2] = val;
                 break;
                 case 2:
                     ((uint32_t *)vmst->_extram)[addr/4] = val;
                 break;
-                default:
-                    setStatusErr(vmst, UVM32_ERR_MEM_WR);
+                // no other values are valid here and will be stopped above
+                default: // fall through
+                case 0:
+                    ((uint8_t *)vmst->_extram)[addr] = val;
                 break;
             }
             vmst->_extramDirty = true;
